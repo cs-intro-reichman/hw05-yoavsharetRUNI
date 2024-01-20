@@ -11,8 +11,8 @@ public class GameOfLife {
 		String fileName = args[0];
 		//// Uncomment the test that you want to execute, and re-compile.
 		//// (Run one test at a time).
-		test1(fileName);
-		//// test2(fileName);
+		// test1(fileName);
+		test2(fileName);
 		//// test3(fileName, 3);
 		//// play(fileName);
 	}
@@ -27,8 +27,23 @@ public class GameOfLife {
 	// the count and cellValue functions.
 	private static void test2(String fileName) {
 		int[][] board = read(fileName);
-		//// Write here code that tests that the count and cellValue functions
-		//// are working properly, and returning the correct values.
+		// print board state
+		System.out.println("Board state :");
+		print(board);
+
+		System.out.println("Starting test 2:");
+		for(int i = 1; i<board.length -1; i++){
+			for(int j = 1; j < board[0].length - 1; j++){
+				String curr_state = board[i][j] == 1 ? "alive" : "dead";
+				int curr_neighbors = count(board, i, j);
+				String next_gen_state = cellValue(board, i, j) == 1 ? "alive" : "dead";
+
+				System.out.println("cell : [" + i + " , " + j + "] is currently " + curr_state);
+				System.out.println("It has " + curr_neighbors + " alive neighbors");
+				System.out.println("According to that, in the next generation it will be " + next_gen_state);
+				System.out.println("*******************************************************");
+			}
+		}
 	}
 		
 	// Reads the data file, plays the game for Ngen generations, 
@@ -98,8 +113,19 @@ public class GameOfLife {
 	// Assumes that j is at least 1 and at most the number of columns in the board - 1. 
 	// Uses the count(board,i,j) function to count the number of alive neighbors.
 	public static int cellValue(int[][] board, int i, int j) {
-		//// Replace the following statement with your code.
-		return 0;
+		int neighbors = count(board, i, j);
+		if(board[i][j] == 0){
+			// cell is currently dead
+			if(neighbors == 3){
+				return 1;
+			}
+			return 0;
+		}
+		// cell is currently alive
+		if(neighbors < 2 || neighbors > 3){
+			return 0;
+		}
+		return 1;
 	}
 	
 	// Counts and returns the number of living neighbors of the given cell
@@ -107,8 +133,18 @@ public class GameOfLife {
 	// Assumes that i is at least 1 and at most the number of rows in the board - 1. 
 	// Assumes that j is at least 1 and at most the number of columns in the board - 1. 
 	public static int count(int[][] board, int i, int j) {
-		//// Replace the following statement with your code.
-		return 0;
+		int alive_neighbors = 0;
+		int [][] indexes = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, 
+							{1, 0}, {-1, 1}, {0, 1}, {1, 1}};
+		
+		for(int idx = 0; idx<indexes.length; idx++){
+			int curr_row = i + indexes[idx][0];
+			int curr_col = j + indexes[idx][1];
+			if(board[curr_row][curr_col] == 1){
+				alive_neighbors++;
+			}
+		}
+		return alive_neighbors;
 	}
 	
 	// Prints the board. Alive and dead cells are printed as 1 and 0, respectively.
