@@ -13,8 +13,8 @@ public class GameOfLife {
 		//// (Run one test at a time).
 		// test1(fileName);
 		// test2(fileName);
-		test3(fileName, 3);
-		//// play(fileName);
+		// test3(fileName, 3);
+		play(fileName);
 	}
 	
 	// Reads the data file and prints the initial board.
@@ -79,18 +79,18 @@ public class GameOfLife {
 		int cols = Integer.parseInt(in.readLine());
 		int[][] board = new int[rows + 2][cols + 2];
 		
-		int row_index = 1;
-		int col_index = 1;
+		int rowIndex = 1;
+		int colIndex = 1;
 		while(!in.isEmpty()){
-			String curr_line = in.readLine();
-			for(int i = 0; i<curr_line.length(); i++){
-				if(curr_line.charAt(i) == 'x'){
-					board[row_index][col_index] = 1;
+			String currLine = in.readLine();
+			for(int i = 0; i<currLine.length(); i++){
+				if(currLine.charAt(i) == 'x'){
+					board[rowIndex][colIndex] = 1;
 				}
-				col_index++;
+				colIndex++;
 			}
-			col_index = 1;
-			row_index++;
+			colIndex = 1;
+			rowIndex++;
 		}
 		return board;
 	}
@@ -99,13 +99,13 @@ public class GameOfLife {
 	// Uses the cellValue(board,i,j) function to compute the value of each 
 	// cell in the new board. Returns the new board.
 	public static int[][] evolve(int[][] board) {
-		int[][] new_board = new int[board.length][board[0].length];
+		int[][] newBoard = new int[board.length][board[0].length];
 		for(int i = 1; i< board.length -1; i++){
 			for(int j = 1; j < board.length -1; j++){
-				new_board[i][j] = cellValue(board, i, j);
+				newBoard[i][j] = cellValue(board, i, j);
 			}
 		}
-		return new_board;
+		return newBoard;
 	}
 
 	// Returns the value that cell (i,j) should have in the next generation.
@@ -138,18 +138,18 @@ public class GameOfLife {
 	// Assumes that i is at least 1 and at most the number of rows in the board - 1. 
 	// Assumes that j is at least 1 and at most the number of columns in the board - 1. 
 	public static int count(int[][] board, int i, int j) {
-		int alive_neighbors = 0;
-		int [][] indexes = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, 
+		int aliveNeighbors = 0;
+		int [][] neighborsIndexes = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, 
 							{1, 0}, {-1, 1}, {0, 1}, {1, 1}};
 		
-		for(int idx = 0; idx<indexes.length; idx++){
-			int curr_row = i + indexes[idx][0];
-			int curr_col = j + indexes[idx][1];
-			if(board[curr_row][curr_col] == 1){
-				alive_neighbors++;
+		for(int neighborIdx = 0; neighborIdx<neighborsIndexes.length; neighborIdx++){
+			int currRow = i + neighborsIndexes[neighborIdx][0];
+			int currCol = j + neighborsIndexes[neighborIdx][1];
+			if(board[currRow][currCol] == 1){
+				aliveNeighbors++;
 			}
 		}
-		return alive_neighbors;
+		return aliveNeighbors;
 	}
 	
 	// Prints the board. Alive and dead cells are printed as 1 and 0, respectively.
